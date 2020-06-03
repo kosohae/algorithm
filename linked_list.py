@@ -25,16 +25,32 @@ class NodeControl(object):
         tmp.next = Node(val)
 
     def insert_sort(self, idx, val):
-        idx_head = self.head_list[idx] 
-        tmp = idx_head
+        if not self._check(idx):
+            print("Idex over Head count")
+            return
+            
+        idx_head = self.head_list[idx]
+        prev = None
+        cur = idx_head
+
+        if val < cur.val:
+            self.insert_first(idx, val)
+
+        else:
+            while cur:
+                if val < cur.val:
+                    prev.next = Node(val)
+                    prev.next.next = cur
+                    break
+                prev = cur
+                cur = cur.next
+
+            if cur is None:
+                self.insert_last(idx, val)
+
+
         # middle, last insert => node가 보통 큰 경우, 사이에 끼는 경우 
         # 새로 들어오는 node가 제일 작은 경우 => head가 새롭게 만들어져야하고 이게 head list에 반영되어야 함.
-        if tmp.val < val:
-            tmp.next = Node(val)
-        else:
-            obj = Node(val)
-            obj.next = tmp
-
     def insert_first(self, idx, val):
         if not self._check(idx):
             print("Idex over Head count")
@@ -105,6 +121,9 @@ class NodeControl(object):
         return True
 
     def _print(self, idx):
+        if not self._check(idx):
+            print("Idex over Head count")
+            return
         head = self.head_list[idx]
         while head:
             print(head.val)
@@ -123,9 +142,12 @@ if __name__ == '__main__':
     obj.insert_last(1, 3)
     obj.insert_last(1, 2)
 
-    obj.create(4)
-
-    obj.create(5)
+    obj.create(3)
+    obj.insert_sort(2,6)
+    obj.insert_sort(2,7)
+    obj.insert_sort(2,5)
+    obj.insert_sort(2,1)
+    obj._print(2)
 
     try:
         # error test
@@ -142,10 +164,6 @@ if __name__ == '__main__':
     else:
         print("don't exist")
 
-    # obj._print(3)
-    # obj.delete_first(3)
+    #obj._print(3)
+    #obj.delete_first(3)
 
-    obj._print(0)
-    obj.insert_first(0,0)
-    print()
-    obj._print(0)
