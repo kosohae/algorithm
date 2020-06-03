@@ -90,13 +90,48 @@ class NodeControl(object):
         prev.next = None
     
     def delete_first(self, idx):
-        # delete last node
+        if not self._check(idx):
+            print("Idex over Head count")
+            return
+            
         if self.head_list[idx].next is None:
             self.head_list.pop(idx)
+        
+        if self.head_cnt == 0:
+            print("Delete error, empty head list")
+            return
+        
         else:
             self.head_list[idx] = self.head_list[idx].next
 
-    def serach(self, idx, val):
+    def delete_item(self, idx, val):
+        # delete value 
+        if not self._check(idx):
+            print("Idex over Head count")
+            return
+
+        if self.head_cnt == 0:
+            print("Delete error, empty head list")
+            return
+
+        else:
+            prev = None
+            cur = self.head_list[idx]
+            cnt=0
+            while cur:
+                if cur.val == val and cnt == 0:
+                    self.head_list[idx] = self.head_list[idx].next
+
+                elif cur.val == val:
+                    prev.next = cur.next
+                    break
+                prev = cur
+                cur = cur.next
+                cnt+=1
+            
+            print("Not found value")
+
+    def search(self, idx, val):
         if not self._check(idx):
             print("Idex over Head count")
             return
@@ -105,6 +140,26 @@ class NodeControl(object):
         while cur:
             if cur.val == val:
                 return True
+            cur = cur.next
+        
+        return False
+
+    def search_sorted(self, idx, val):
+        """ search for value in sorted linked list"""
+        if not self._check(idx):
+            print("Idex over Head count")
+            return
+
+        cur = self.head_list[idx]
+        
+        if val < cur.val:
+            return False
+            
+        while cur:
+            if cur.val == val:
+                return True
+            elif val < cur.val:
+                break
             cur = cur.next
         
         return False
@@ -151,15 +206,17 @@ if __name__ == '__main__':
 
     try:
         # error test
-        obj.delete_last(5)
+        obj.delete_item(2,9)
+        print('remove value')
     except IndexError as e:
         print(str(e))
+    obj._print(2)
 
     # print(obj.head_list)
     #obj.delete(2)
 
     # search test
-    if obj.serach(3,4):
+    if obj.search_sorted(2,5):
         print("exist")
     else:
         print("don't exist")
