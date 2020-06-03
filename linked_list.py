@@ -117,17 +117,15 @@ class NodeControl(object):
         else:
             prev = None
             cur = self.head_list[idx]
-            cnt=0
+            if cur.val == val:
+                self.head_list[idx] = self.head_list[idx].next
+                
             while cur:
-                if cur.val == val and cnt == 0:
-                    self.head_list[idx] = self.head_list[idx].next
-
-                elif cur.val == val:
+                if cur.val == val:
                     prev.next = cur.next
                     break
                 prev = cur
                 cur = cur.next
-                cnt+=1
             
             print("Not found value")
 
